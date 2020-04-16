@@ -1,4 +1,0 @@
-pandas
-spacy
-spacy.util
-random
