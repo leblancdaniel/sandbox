@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import spacy
@@ -7,7 +8,10 @@ from sklearn.model_selection import train_test_split
 # Load the large model to get the vectors
 nlp = spacy.load("en_core_web_lg")
 # Load data
-review_data = pd.read_csv('../yelp_ratings.csv')
+script_dir = os.path.dirname(__file__)
+rel_path = "yelp_ratings.csv"
+filepath = os.path.join(script_dir, rel_path)
+review_data = pd.read_csv(filepath)
 
 # We just want the vectors so we can turn off other models in the pipeline
 with nlp.disable_pipes():
