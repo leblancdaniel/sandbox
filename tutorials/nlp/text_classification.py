@@ -92,7 +92,7 @@ def evaluate(model, texts, labels):
     return accuracy
 
 # filepath to yelp_ratings.csv
-filepath = "/Users/danielleblanc/Downloads/nlp-course/yelp_ratings.csv"
+filepath = "../yelp_ratings.csv"
 # Load data
 train_texts, train_labels, val_texts, val_labels = load_data(filepath)
 # Create an empty model
