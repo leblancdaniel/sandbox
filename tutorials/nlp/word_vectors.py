@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import spacy
@@ -7,7 +8,10 @@ from sklearn.model_selection import train_test_split
 # Load the large model to get the vectors
 nlp = spacy.load("en_core_web_lg")
 # Load data
-review_data = pd.read_csv('Users/danielleblanc/Downloads/nlp-course/yelp_ratings.csv')
+script_dir = os.path.dirname(__file__)
+rel_path = "yelp_ratings.csv"
+filepath = os.path.join(script_dir, rel_path)
+review_data = pd.read_csv(filepath)
 
 # We just want the vectors so we can turn off other models in the pipeline
 with nlp.disable_pipes():
@@ -18,8 +22,7 @@ X_train, X_test, y_train, y_test = train_test_split(vectors, review_data.sentime
 # Create the LinearSVC model
 model = LinearSVC(random_state=1, dual=False)
 model.fit(X_train, y_train)
-# Uncomment and run to see model accuracy
-#print(f'Model test accuracy: {model.score(X_test, y_test)*100:.3f}%')
+print(f'Model test accuracy: {model.score(X_test, y_test)*100:.3f}%')
 
 review = """I absolutely love this place. The 360 degree glass windows with the 
 Yerba buena garden view, tea pots all around and the smell of fresh tea everywhere 

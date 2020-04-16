@@ -1,3 +1,4 @@
+import os
 import pandas as pd 
 import spacy
 from spacy.util import minibatch
@@ -92,7 +93,9 @@ def evaluate(model, texts, labels):
     return accuracy
 
 # filepath to yelp_ratings.csv
-filepath = "/Users/danielleblanc/Downloads/nlp-course/yelp_ratings.csv"
+script_dir = os.path.dirname(__file__)
+rel_path = "yelp_ratings.csv"
+filepath = os.path.join(script_dir, rel_path)
 # Load data
 train_texts, train_labels, val_texts, val_labels = load_data(filepath)
 # Create an empty model
