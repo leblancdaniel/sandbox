@@ -1,11 +1,14 @@
+import os
 import pandas as pd
 from sklearn import preprocessing
 import lightgbm as lgb
 from sklearn import metrics 
 
 # Load data
-click_data = pd.read_csv('../input/feature-engineering-data/train_sample.csv',
-                         parse_dates=['click_time'])
+script_dir = os.path.dirname(__file__)
+rel_path = "train_sample.csv"
+filepath = os.path.join(script_dir, rel_path)
+click_data = pd.read_csv(filepath, parse_dates=['click_time'])
 # Parse date feature
 clicks = click_data.copy()
 clicks['day'] = clicks['click_time'].dt.day.astype('uint8')
