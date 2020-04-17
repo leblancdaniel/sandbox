@@ -124,7 +124,7 @@ def count_past_events(series, window='6H'):
     series = pd.Series(series.index, index=series)
     past_events = series.rolling(window).count() - 1
     return past_events
-clicks['ip_past_6H_counts'] = count_past_events(clicks['ip'], '6H')
+clicks['ip_past_6H_counts'] = count_past_events(clicks['ip'])
 # Time since last event
 def time_diff(series):
     """ Returns a series with the time since the last timestamp in seconds """
