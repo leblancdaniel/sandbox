@@ -13,7 +13,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 # LIME explainability model for tabular datasets
 import lime
-import lime.lime_tabular
 # import researchpy for descriptive statistics and informative t-test results
 import researchpy as rp
 np.random.seed(4)
