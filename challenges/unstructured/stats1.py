@@ -10,7 +10,7 @@ import seaborn as sns
 np.random.seed(4)
 
 script_dir = os.path.dirname(__file__)
-rel_path = "stats1.csv"
+rel_path = "ds1.csv"
 filepath = os.path.join(script_dir, rel_path)
 data = pd.read_csv(filepath)
 data.columns = ['ID', 'x1', 'x2', 'x3', 'x5', 'x6', 'ya', 'yb', 'yc']
