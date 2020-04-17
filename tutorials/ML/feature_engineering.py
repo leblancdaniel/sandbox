@@ -125,7 +125,7 @@ _ = train_model(train, valid)
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
 def count_past_events(series, window='6H'):
-    """ Returns a series that counts the number of events in the past 6 hours """
+    # Returns a series that counts the number of events in the past 6 hours 
     series = pd.Series(series.index, index=series)
     past_events = series.rolling(window).count() - 1
     return past_events
