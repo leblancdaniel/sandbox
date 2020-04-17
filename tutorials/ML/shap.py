@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
@@ -28,6 +29,8 @@ print(eli5.format_as_text(eli5.explain_weights(perm)))
 data_for_prediction = val_X.iloc[0,:]  # use 1 row of data here. Could use multiple rows if desired
 # Create object that can calculate shap values
 explainer = shap.TreeExplainer(my_model)
-shap_values = explainer.shap_values(data_for_prediction)
-shap.initjs()
-shap.force_plot(explainer.expected_value[0], shap_values[0], data_for_prediction)
+shap_values = explainer.shap_values(val_X)
+shap.summary_plot(shap_values[1], val_X)
+
+for col in val_X.columns:
+    shap.dependence_plot(col, shap_values[1], val_X)
