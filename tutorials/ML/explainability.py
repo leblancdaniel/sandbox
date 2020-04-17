@@ -32,7 +32,8 @@ first_model = RandomForestRegressor(n_estimators=50, random_state=1).fit(train_X
 
 # show permutation importance 
 perm = PermutationImportance(first_model, random_state=1).fit(val_X, val_y)
-eli5.show_weights(perm, feature_names = val_X.columns.tolist())
+#eli5.show_weights(perm, feature_names = val_X.columns.tolist())
+print(eli5.format_as_text(eli5.explain_weights(perm)))
 
 # create new features
 data['abs_lon_change'] = abs(data.dropoff_longitude - data.pickup_longitude)
@@ -49,4 +50,5 @@ second_model = RandomForestRegressor(n_estimators=30, random_state=1).fit(new_tr
 
 # Create a PermutationImportance object on second_model and fit it to new_val_X and new_val_y
 perm2 = PermutationImportance(second_model, random_state=1).fit(new_val_X, new_val_y)
-eli5.show_weights(perm2, feature_names = features_2)
+#eli5.show_weights(perm2, feature_names = features_2)
+print(eli5.format_as_text(eli5.explain_weights(perm2)))
