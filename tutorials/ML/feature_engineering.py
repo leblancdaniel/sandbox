@@ -105,7 +105,7 @@ valid_encoded = valid.join(cb_enc.transform(valid[cat_features]).add_suffix('_cb
 # Train model on CatBoost encoded datasets
 _ = train_model(train_encoded, valid_encoded)
 """
-"""
+
 # Feature generation based on interactions
 cat_features = ['ip', 'app', 'device', 'os', 'channel']
 interactions = pd.DataFrame(index=clicks.index)
@@ -120,8 +120,8 @@ clicks = clicks.join(interactions)
 print("Score with interactions")
 train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid)
-"""
 
+"""
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
 def count_past_events(series, window='6H'):
@@ -133,7 +133,7 @@ clicks['ip_past_6H_counts'] = count_past_events(clicks['click_time'])
 print("Score with rolling window")
 train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid, test)
-
+"""
 # Number of previous app downloads
 def previous_attributions(series):
     """ Returns a series with the rolling sum of target series since current row """
