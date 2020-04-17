@@ -2,9 +2,12 @@ import os
 import pandas as pd
 from sklearn import preprocessing, metrics
 import lightgbm as lgb
+
 import category_encoders as ce
 import itertools
-from sklearn.feature_selection import SelectKBest, f_classif
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_selection import SelectFromModel
 
 # Load data
 script_dir = os.path.dirname(__file__)
@@ -163,3 +166,15 @@ dropped_columns = selected_features.columns[selected_features.var() == 0]
 _ = train_model(train.drop(dropped_columns, axis=1), 
                 valid.drop(dropped_columns, axis=1),
                 test.drop(dropped_columns, axis=1))
+
+# Feature selection with L1 regularization
+def select_features_l1(X, y):
+    """ Return selected features using logistic regression with an L1 penalty """
+    model = LogisticRegression(penalty='l1', random_state=7, C=0.1).fit(X, y)
+    model = SelectFromModel(model, prefit=True)
+    X_new = model.transform(X)
+    selected_features = pd.DataFrame(model.inverse_transform(X_new), 
+                                     index=X.index,
+                                     columns=X.columns)
+    cols_to_keep = selected_features.columns[selected_features.var() != 0]
+    return cols_to_keep 
