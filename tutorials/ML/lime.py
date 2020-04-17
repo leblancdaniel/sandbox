@@ -3,12 +3,26 @@ import numpy as np
 import pandas as pd
 import scipy
 from scipy import stats
-
+# matplotlib and seaborn for visualizations
+import matplotlib.pyplot as plt
+import seaborn as sns
+# for splitting data into train/test datasets for Random Forest Classifier model
+import sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+# LIME explainability model for tabular datasets
+import lime
+import lime.lime_tabular
+# import researchpy for descriptive statistics and informative t-test results
+import researchpy as rp
 np.random.seed(4)
 
 # read diabetes dataset
-data = pd.read_csv("/Users/danielleblanc/Downloads/diabetes.csv", engine='python')
-
+script_dir = os.path.dirname(__file__)
+rel_path = "diabetes.csv"
+filepath = os.path.join(script_dir, rel_path)
+data = pd.read_csv(filepath, engine='python')
 features = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness',
             'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
 print(data.head())
@@ -26,9 +40,6 @@ data['Glucose'] = data['Glucose'].fillna(data['Glucose'].median())
 data['BloodPressure'] = data['BloodPressure'].fillna(data['BloodPressure'].median())
 data['BMI'] = data['BMI'].fillna(data['BMI'].median())
 
-# matplotlib and seaborn for visualizations
-import matplotlib.pyplot as plt
-import seaborn as sns
 #identify R-squared between features with large % of missing values
 corr = data.corr()
 sns.heatmap(corr,
@@ -54,11 +65,6 @@ print("Removing outliers of non-null values...")
 data = data[(np.abs(stats.zscore(data)) < 3).all(axis=1)]
 print(data.shape)
 
-# for splitting data into train/test datasets for Random Forest Classifier model
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
 # identify dependent & independent variables
 X = data.iloc[:, :-1]
 y = data.iloc[:, -1]
@@ -78,10 +84,6 @@ y_pred = rf.predict(X_test)
 # calculate accuracy score
 print(accuracy_score(y_test, y_pred) * 100)
 
-# LIME explainability model for tabular datasets
-# LIME explainer is model-agnostic, unlike SHAP
-import lime
-import lime.lime_tabular
 # create LIME explainer
 explainer = lime.lime_tabular.LimeTabularExplainer(X_train.values,
             feature_names=features,
@@ -92,8 +94,6 @@ i = 0
 exp = explainer.explain_instance(X_test.values[i], rf.predict_proba, num_features=8)
 exp.show_in_notebook(show_table=True, show_all=True)
 
-# import researchpy for descriptive statistics and informative t-test results
-import researchpy as rp
 # separate postive and negative outcomes for independent t-test
 positive_outcome = data[data['Outcome'] == 1]
 negative_outcome = data[data['Outcome'] == 0]
