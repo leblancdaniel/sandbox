@@ -138,5 +138,5 @@ def previous_attributions(series):
     return sums
 clicks['ip_past_6hr_counts'] = previous_attributions(clicks['is_attributed'])
 # split and train model on new features: interactions, past counts, time since last, rolling sum
-train, valid, test = get_data_splits(clicks.join(timedeltas))
+train, valid, test = get_data_splits(clicks.merge(timedeltas))
 _ = train_model(train, valid, test)
