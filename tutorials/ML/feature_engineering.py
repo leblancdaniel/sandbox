@@ -116,23 +116,21 @@ for c1, c2 in itertools.combinations(cat_features, 2):
     interactions[new_col_name] = encoder.fit_transform(new_values)
 # combine interaction features with clicks dataset
 clicks = clicks.join(interactions)
-clicks = clicks[clicks.index.duplicated()]
+print("Score with interactions")
+train, valid, test = get_data_splits(clicks)
+_ = train_model(train, valid)
 
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
 def count_past_events(series, window='6H'):
     """ Returns a series that counts the number of events in the past 6 hours """
-    series = pd.Series(series.index, index=series)
+    series = pd.Series(series.index, index=clicks.index)
     past_events = series.rolling(window).count() - 1
     return past_events
 clicks['ip_past_6H_counts'] = count_past_events(clicks['click_time'])
-
-# Time since last event
-def time_diff(series):
-    """ Returns a series with the time since the last timestamp in seconds """
-    return series.diff().dt.total_seconds()
-timedeltas = clicks.groupby('ip')['click_time'].transform(time_diff)
-clicks['past_events_6H'] = timedeltas
+print("Score with rolling window")
+train, valid, test = get_data_splits(clicks)
+_ = train_model(train, valid, test)
 
 # Number of previous app downloads
 def previous_attributions(series):
@@ -140,7 +138,7 @@ def previous_attributions(series):
     sums = series.expanding(min_periods=2).sum() - series
     return sums
 clicks['ip_past_6hr_counts'] = previous_attributions(clicks['is_attributed'])
-
 # split and train model on new features: interactions, past counts, time since last, rolling sum
+print("Score with running total sum")
 train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid, test)
