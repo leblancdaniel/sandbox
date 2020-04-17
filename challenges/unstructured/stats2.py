@@ -1,4 +1,5 @@
 # import libraries for data reading, cleansing, processing, visualizations
+import os
 import numpy as np
 import pandas as pd
 from scipy.stats import describe
@@ -6,7 +7,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 np.random.seed(4)
 
-data = pd.read_csv("C:/Users/Daniel LeBlanc/Desktop/Daniel 2019/Resume/MLB/ds2.csv")
+script_dir = os.path.dirname(__file__)
+rel_path = "ds2.csv"
+filepath = os.path.join(script_dir, rel_path)
+data = pd.read_csv(filepath)
 data.columns = ['ID', 'x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'x10']
 data = data.drop(columns='ID', axis=1)
 print(round(data.head(),2))
