@@ -45,8 +45,7 @@ def train_model(train, valid, test=None, feature_cols=None):
     num_round = 1000
     print("Training model!")
     bst = lgb.train(param, dtrain, num_round, valid_sets=[dvalid], 
-                    early_stopping_rounds=20, verbose_eval=False, 
-                   boost_from_average=False)
+                    early_stopping_rounds=20, verbose_eval=False)
     
     valid_pred = bst.predict(valid[feature_cols])
     valid_score = metrics.roc_auc_score(valid['is_attributed'], valid_pred)
