@@ -4,8 +4,12 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+
 import eli5
 from eli5.sklearn import PermutationImportance
+
+from matplotlib import pyplot as plt
+from pdpbox import pdp, get_dataset, info_plots
 
 # Load data
 script_dir = os.path.dirname(__file__)
@@ -52,3 +56,15 @@ second_model = RandomForestRegressor(n_estimators=30, random_state=1).fit(new_tr
 perm2 = PermutationImportance(second_model, random_state=1).fit(new_val_X, new_val_y)
 #eli5.show_weights(perm2, feature_names = features_2)
 print(eli5.format_as_text(eli5.explain_weights(perm2)))
+
+# Partial Dependence Plot
+for feat_name in base_features:
+    pdp_dist = pdp.pdp_isolate(model=first_model, dataset=new_val_X, 
+                               model_features=features_2, feature=feat_name)
+    pdp.pdp_plot(pdp_dist, feat_name)
+    plt.show()
+
+# 2D partial dependence plot
+inter2 = pdp.pdp_interact(model=first_model, dataset=new_val_X, model_features=features_2, features=['pickup_longitude', 'dropoff_longitude'])
+pdp.pdp_interact_plot(pdp_interact_out=inter2, feature_names=['pickup_longitude', 'dropoff_longitude'], plot_type='contour')
+plt.show()
