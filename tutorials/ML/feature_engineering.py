@@ -119,6 +119,7 @@ clicks = clicks.join(interactions)
 print("Score with interactions")
 train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid)
+clicks = clicks[clicks.index.duplicated()]
 
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
