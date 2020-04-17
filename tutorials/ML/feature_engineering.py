@@ -1,8 +1,7 @@
 import os
 import pandas as pd
-from sklearn import preprocessing
+from sklearn import preprocessing, metrics
 import lightgbm as lgb
-from sklearn import metrics 
 import category_encoders as ce
 
 # Load data
