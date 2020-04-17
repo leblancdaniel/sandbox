@@ -1,12 +1,9 @@
 import os
 import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-
 import eli5
 from eli5.sklearn import PermutationImportance
-
 from matplotlib import pyplot as plt
 import shap
 
@@ -28,7 +25,7 @@ print(eli5.format_as_text(eli5.explain_weights(perm)))
 # Calculate SHAP values
 data_for_prediction = val_X.iloc[0,:]  # use 1 row of data here. Could use multiple rows if desired
 # Create object that can calculate shap values
-explainer = shap.TreeExplainer(my_model)
+explainer = shap.KernelExplainer(my_model)
 shap_values = explainer.shap_values(val_X)
 shap.summary_plot(shap_values[1], val_X)
 
