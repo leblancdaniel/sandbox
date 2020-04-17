@@ -4,6 +4,7 @@ from sklearn import preprocessing, metrics
 import lightgbm as lgb
 import category_encoders as ce
 import itertools
+from sklearn.feature_selection import SelectKBest, f_classif
 
 # Load data
 script_dir = os.path.dirname(__file__)
@@ -144,3 +145,21 @@ clicks['ip_past_6hr_counts'] = previous_attributions(clicks['is_attributed'])
 print("Score with running total sum")
 train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid, test)
+
+# Feature selection
+feature_cols = clicks.columns.drop(['click_time', 'attributed_time', 'is_attributed'])
+train, valid, test = get_data_splits(clicks)
+# Create the selector, keeping 40 features
+selector = SelectKBest(f_classif, 40)
+# Use the selector to retrieve the best features
+X_new = selector.fit_transform(train[feature_cols], train['is_attributed'])
+# Get back the kept features as a DataFrame with dropped columns as all 0s
+selected_features = pd.DataFrame(selector.inverse_transform(X_new),
+                                 index=train.index,
+                                 columns=feature_cols)
+# Find the columns that were dropped
+dropped_columns = selected_features.columns[selected_features.var() == 0]
+# Train model after dropping less-predictive features
+_ = train_model(train.drop(dropped_columns, axis=1), 
+                valid.drop(dropped_columns, axis=1),
+                test.drop(dropped_columns, axis=1))
