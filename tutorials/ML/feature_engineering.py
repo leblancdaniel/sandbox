@@ -124,7 +124,7 @@ _ = train_model(train, valid)
 # Number of events in the past X hours
 def count_past_events(series, window='6H'):
     """ Returns a series that counts the number of events in the past 6 hours """
-    series = pd.Series(series.index, index=clicks.index)
+    series = pd.Series(series.index, index=series)
     past_events = series.rolling(window).count() - 1
     return past_events
 clicks['ip_past_6H_counts'] = count_past_events(clicks['click_time'])
