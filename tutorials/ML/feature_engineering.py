@@ -116,7 +116,7 @@ for c1, c2 in itertools.combinations(cat_features, 2):
     interactions[new_col_name] = encoder.fit_transform(new_values)
 # combine interaction features with clicks dataset
 clicks = clicks.join(interactions)
-
+clicks = clicks[clicks.index.duplicated()]
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
 def count_past_events(series, window='6H'):
