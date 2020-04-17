@@ -105,6 +105,7 @@ valid_encoded = valid.join(cb_enc.transform(valid[cat_features]).add_suffix('_cb
 # Train model on CatBoost encoded datasets
 _ = train_model(train_encoded, valid_encoded)
 """
+"""
 # Feature generation based on interactions
 cat_features = ['ip', 'app', 'device', 'os', 'channel']
 interactions = pd.DataFrame(index=clicks.index)
@@ -119,7 +120,7 @@ clicks = clicks.join(interactions)
 print("Score with interactions")
 train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid)
-clicks = clicks[clicks.index.duplicated()]
+"""
 
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
