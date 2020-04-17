@@ -25,7 +25,7 @@ print(eli5.format_as_text(eli5.explain_weights(perm)))
 # Calculate SHAP values
 data_for_prediction = val_X.iloc[0,:]  # use 1 row of data here. Could use multiple rows if desired
 # Create object that can calculate shap values
-explainer = shap.KernelExplainer(my_model)
+explainer = shap.KernelExplainer(my_model.predict, val_X)
 shap_values = explainer.shap_values(val_X)
 shap.summary_plot(shap_values[1], val_X)
 
