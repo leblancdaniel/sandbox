@@ -14,6 +14,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 # LIME explainability model for tabular datasets
 import lime
+import lime.lime_tabular
 # import researchpy for descriptive statistics and informative t-test results
 import researchpy as rp
 np.random.seed(4)
@@ -88,7 +89,7 @@ print(accuracy_score(y_test, y_pred) * 100)
 explainer = lime.lime_tabular.LimeTabularExplainer(X_train.values,
             feature_names=features,
             class_names=class_names,
-            discretize_continuous=False)
+            discretize_continuous=True)
 # i is the record we explain
 i = 0
 exp = explainer.explain_instance(X_test.values[i], rf.predict_proba, num_features=8)
