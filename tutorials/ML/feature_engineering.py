@@ -117,6 +117,7 @@ for c1, c2 in itertools.combinations(cat_features, 2):
 # combine interaction features with clicks dataset
 clicks = clicks.join(interactions)
 clicks = clicks[clicks.index.duplicated()]
+
 # Generate numerical features based on rolling window
 # Number of events in the past X hours
 def count_past_events(series, window='6H'):
@@ -125,18 +126,21 @@ def count_past_events(series, window='6H'):
     past_events = series.rolling(window).count() - 1
     return past_events
 clicks['ip_past_6H_counts'] = count_past_events(clicks['click_time'])
+
 # Time since last event
 def time_diff(series):
     """ Returns a series with the time since the last timestamp in seconds """
     return series.diff().dt.total_seconds()
 timedeltas = clicks.groupby('ip')['click_time'].transform(time_diff)
 clicks['past_events_6H'] = timedeltas
+
 # Number of previous app downloads
 def previous_attributions(series):
     """ Returns a series with the rolling sum of target series since current row """
     sums = series.expanding(min_periods=2).sum() - series
     return sums
 clicks['ip_past_6hr_counts'] = previous_attributions(clicks['is_attributed'])
+
 # split and train model on new features: interactions, past counts, time since last, rolling sum
-train, valid, test = get_data_splits(clicks.merge(timedeltas))
+train, valid, test = get_data_splits(clicks)
 _ = train_model(train, valid, test)
