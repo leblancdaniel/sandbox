@@ -1,4 +1,3 @@
-# kaggle
-includes any projects, challenges, tutorials from Kaggle
+# sandbox
 
-create virtual environment before installing any required libraries
+do whatever. go crazy. :)
