@@ -1,0 +1,14 @@
+There are 3 input files:
+- Some sales data (category_sales.csv)
+- Date dimension (date_dim.csv)
+- Some store attributes (store_lookup.csv)
+
+Please complete the following steps in order.  Use R and/or Python and be prepared to show your work and share your approach and code with the team.
+
+1) Create a summary table that matches summary_tbl.csv.
+
+2) Some stores are missing "running_sales" data. Where missing, fill in those months with your best prediction using any of data in the csv files.
+
+3) Using any of the data in the .csv files, for each store identify the most similar store(s).
+
+Note: Points are given for the most simple, elegant solution. Feel free to spend up to 3 hours on it, but remember that we're really just looking to assess how you approach everyday problems not how many angles you explore.
